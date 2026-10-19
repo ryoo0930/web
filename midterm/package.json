@@ -1,0 +1,7 @@
+{
+  "name": "the-family-midterm", "version": "1.0.0", "private": true,
+  "description": "The Family 조직 운영 관리 / 202211205",
+  "main": "app.js", "engines": {"node": ">=20"},
+  "scripts": {"start": "node app.js", "audit": "node scripts/audit-api.js", "docs": "node scripts/build-docs.js"},
+  "dependencies": {"express": "^4.21.2", "ejs": "^3.1.10", "mysql2": "^3.14.0", "mongodb": "^6.15.0", "express-session": "^1.18.1", "dotenv": "^16.5.0", "swagger-ui-express": "^5.0.1", "helmet": "^8.1.0"}
+}
