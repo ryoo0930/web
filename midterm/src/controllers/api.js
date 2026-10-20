@@ -8,7 +8,9 @@ async function dispatch(db,req,op) {
     return service.mutate(db,req.actor,op.entity,op.mode,req.params.id,req.body||{});
   }
   const input=fields(req.body||{},op.input);
-  const service=op.implementation.split('#')[0].replace('src/services/','').replace('.js','');
+  if(op.group==='auth')return require('../services/auth').execute(db,req,op.operationId,input);
+  const service=op.group==='evaluations'||op.operationId.endsWith('History')||['activityFeed','auditLog'].includes(op.operationId)
+    ? 'records' : op.group==='reports' ? 'reports' : 'operations';
   return require(`../services/${service}`).execute(db,req,op,input);
 }
 module.exports={dispatch};

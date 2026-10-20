@@ -24,6 +24,16 @@ async function startServer() {
   return { app, server, shutdown };
 }
 function startupError(error) {
+  if (error.code === 'MODULE_NOT_FOUND') {
+    console.error('초기화 실패: 필요한 Node.js 모듈을 찾을 수 없습니다.');
+    const missing = /^Cannot find module ['"]([^'"\r\n]+)['"]/.exec(error.message || '');
+    if (missing) console.error('누락된 모듈:', missing[1]);
+    console.error('프로젝트 폴더에서 npm.cmd install --ignore-scripts (Windows) 또는 npm install --ignore-scripts (Linux/macOS)를 실행한 뒤 다시 시작하세요.');
+    console.error('상대 경로(./ 또는 ../) 모듈이면 해당 프로젝트 파일이 있는지도 확인하세요.');
+    console.error('오류 분류:', error.code);
+    process.exitCode = 1;
+    return;
+  }
   console.error(error.code === 'EADDRINUSE'
     ? '8593 포트가 사용 중입니다. 사용자가 기존 프로그램을 확인하고 종료한 뒤 다시 실행하세요. 포트 자동 변경은 하지 않습니다.'
     : '초기화 실패: MySQL/MongoDB 실행 상태, .env 연결 설정 및 CREATE/SELECT/INSERT/UPDATE/DELETE/INDEX 권한을 확인하세요. 기존 DB에는 CREATE DATABASE 권한이 필요하지 않습니다.');

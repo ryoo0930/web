@@ -7,6 +7,7 @@ const {loadActor}=require('../permissions');
 const regenerate=req=>new Promise((resolve,reject)=>req.session.regenerate(e=>e?reject(e):resolve()));
 const destroy=req=>new Promise((resolve,reject)=>req.session.destroy(e=>e?reject(e):resolve()));
 async function execute(db,req,op,input) {
+  op = typeof op === 'string' ? op : op.operationId;
   const actor=req.actor;
   if(op==='csrf') {req.session.csrf ||= crypto.randomBytes(32).toString('hex');return {csrfToken:req.session.csrf};}
   if(op==='login') {
